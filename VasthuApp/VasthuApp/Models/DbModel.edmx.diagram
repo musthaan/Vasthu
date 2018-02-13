@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3a2f09625c674b0daa030d03547ac042" Name="Diagram1">
+        <EntityTypeShape EntityType="VasthuDBModel.CustomerService" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.CustomerServiceDetail" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.Estimate" Width="1.5" PointX="3.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.EstimateDetail" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.Expense" Width="1.5" PointX="8" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.ExpenseCategory" Width="1.5" PointX="5.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.Receipt" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.ServiceMaster" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.sysdiagram" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VasthuDBModel.User" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="VasthuDBModel.FK_CustomerServiceDetails_CustomerService" ManuallyRouted="false" />
+        <AssociationConnector Association="VasthuDBModel.FK_CustomerServiceDetails_ServiceMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="VasthuDBModel.FK_EstimateDetails_Estimate" ManuallyRouted="false" />
+        <AssociationConnector Association="VasthuDBModel.FK_EstimateDetails_ServiceMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="VasthuDBModel.FK_Expense_ExpenseCategory" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
