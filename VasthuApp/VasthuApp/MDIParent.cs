@@ -73,6 +73,7 @@ namespace VasthuApp
                     {
                         Util.Config.IsSecure = true;
                         estimateToolStripMenuItem.Visible = true;
+                        estimateReportToolStripMenuItem1.Visible = true;
                     }
                     else
                     {
@@ -87,6 +88,30 @@ namespace VasthuApp
         private void estimateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmEstimate frm = new frmEstimate() { MdiParent = this };
+            frm.Show();
+        }
+
+        private void serviceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reports.frmServiceReport frm = new Reports.frmServiceReport() { MdiParent = this };
+            frm.Show();
+        }
+
+        private void expenseToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Reports.frmEstimateReport frm = new Reports.frmEstimateReport() { MdiParent = this };
+            frm.Show();
+
+        }
+
+        private void MDIParent_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void receiptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reports.frmReceiptReport frm = new Reports.frmReceiptReport() { MdiParent = this };
             frm.Show();
         }
     }

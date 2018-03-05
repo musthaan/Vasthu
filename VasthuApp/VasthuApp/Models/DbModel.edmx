@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="VasthuDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="VasthuDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CustomerService">
           <Key>
             <PropertyRef Name="Id" />
@@ -86,6 +86,7 @@
           <Property Name="CustomerAddress" Type="nvarchar" MaxLength="1000" />
           <Property Name="Total" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="ServiceId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="ServiceMaster">
           <Key>
@@ -177,6 +178,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Receipt_ServiceMaster">
+          <End Role="ServiceMaster" Type="Self.ServiceMaster" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="VasthuDBModelStoreContainer">
           <EntitySet Name="CustomerService" EntityType="Self.CustomerService" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerServiceDetails" EntityType="Self.CustomerServiceDetails" Schema="dbo" store:Type="Tables" />
@@ -208,9 +221,12 @@
             <End Role="ExpenseCategory" EntitySet="ExpenseCategory" />
             <End Role="Expense" EntitySet="Expense" />
           </AssociationSet>
+          <AssociationSet Name="FK_Receipt_ServiceMaster" Association="Self.FK_Receipt_ServiceMaster">
+            <End Role="ServiceMaster" EntitySet="ServiceMaster" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VasthuDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -303,6 +319,8 @@
           <Property Name="CustomerAddress" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Total" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="ServiceMaster" Relationship="VasthuDBModel.FK_Receipt_ServiceMaster" FromRole="Receipt" ToRole="ServiceMaster" />
         </EntityType>
         <EntityType Name="ServiceMaster">
           <Key>
@@ -313,6 +331,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CustomerServiceDetails" Relationship="Self.FK_CustomerServiceDetails_ServiceMaster" FromRole="ServiceMaster" ToRole="CustomerServiceDetails" />
           <NavigationProperty Name="EstimateDetails" Relationship="Self.FK_EstimateDetails_ServiceMaster" FromRole="ServiceMaster" ToRole="EstimateDetails" />
+          <NavigationProperty Name="Receipts" Relationship="VasthuDBModel.FK_Receipt_ServiceMaster" FromRole="ServiceMaster" ToRole="Receipt" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -427,7 +446,23 @@
             <End Role="ExpenseCategory" EntitySet="ExpenseCategories" />
             <End Role="Expense" EntitySet="Expenses" />
           </AssociationSet>
+          <AssociationSet Name="FK_Receipt_ServiceMaster" Association="VasthuDBModel.FK_Receipt_ServiceMaster">
+            <End Role="ServiceMaster" EntitySet="ServiceMasters" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Receipt_ServiceMaster">
+          <End Type="VasthuDBModel.ServiceMaster" Role="ServiceMaster" Multiplicity="1" />
+          <End Type="VasthuDBModel.Receipt" Role="Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -513,6 +548,7 @@
           <EntitySetMapping Name="Receipts">
             <EntityTypeMapping TypeName="VasthuDBModel.Receipt">
               <MappingFragment StoreEntitySet="Receipt">
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />

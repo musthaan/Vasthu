@@ -19,6 +19,7 @@ namespace VasthuApp.Models
         {
             this.CustomerServiceDetails = new HashSet<CustomerServiceDetail>();
             this.EstimateDetails = new HashSet<EstimateDetail>();
+            this.Receipts = new HashSet<Receipt>();
         }
     
         public long Id { get; set; }
@@ -29,5 +30,7 @@ namespace VasthuApp.Models
         public virtual ICollection<CustomerServiceDetail> CustomerServiceDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EstimateDetail> EstimateDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receipt> Receipts { get; set; }
     }
 }

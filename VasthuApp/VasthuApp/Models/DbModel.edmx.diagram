@@ -20,6 +20,7 @@
         <AssociationConnector Association="VasthuDBModel.FK_EstimateDetails_Estimate" ManuallyRouted="false" />
         <AssociationConnector Association="VasthuDBModel.FK_EstimateDetails_ServiceMaster" ManuallyRouted="false" />
         <AssociationConnector Association="VasthuDBModel.FK_Expense_ExpenseCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="VasthuDBModel.FK_Receipt_ServiceMaster" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

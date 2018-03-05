@@ -40,9 +40,10 @@
             this.customerServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.receiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.estimateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.daybookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.expenseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.estimateReportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -54,7 +55,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.estimateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.receiptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -141,12 +142,21 @@
             this.expenseToolStripMenuItem.Text = "Expense";
             this.expenseToolStripMenuItem.Click += new System.EventHandler(this.expenseToolStripMenuItem_Click);
             // 
+            // estimateToolStripMenuItem
+            // 
+            this.estimateToolStripMenuItem.Name = "estimateToolStripMenuItem";
+            this.estimateToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.estimateToolStripMenuItem.Text = "Estimate";
+            this.estimateToolStripMenuItem.Visible = false;
+            this.estimateToolStripMenuItem.Click += new System.EventHandler(this.estimateToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.daybookToolStripMenuItem,
-            this.expenseToolStripMenuItem1,
-            this.serviceToolStripMenuItem});
+            this.estimateReportToolStripMenuItem1,
+            this.serviceToolStripMenuItem,
+            this.receiptsToolStripMenuItem});
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(59, 20);
             this.toolStripMenuItem3.Text = "Reports";
@@ -154,21 +164,24 @@
             // daybookToolStripMenuItem
             // 
             this.daybookToolStripMenuItem.Name = "daybookToolStripMenuItem";
-            this.daybookToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.daybookToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.daybookToolStripMenuItem.Text = "Daybook";
             this.daybookToolStripMenuItem.Click += new System.EventHandler(this.daybookToolStripMenuItem_Click);
             // 
-            // expenseToolStripMenuItem1
+            // estimateReportToolStripMenuItem1
             // 
-            this.expenseToolStripMenuItem1.Name = "expenseToolStripMenuItem1";
-            this.expenseToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
-            this.expenseToolStripMenuItem1.Text = "Expense";
+            this.estimateReportToolStripMenuItem1.Name = "estimateReportToolStripMenuItem1";
+            this.estimateReportToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.estimateReportToolStripMenuItem1.Text = "Estimates";
+            this.estimateReportToolStripMenuItem1.Visible = false;
+            this.estimateReportToolStripMenuItem1.Click += new System.EventHandler(this.expenseToolStripMenuItem1_Click);
             // 
             // serviceToolStripMenuItem
             // 
             this.serviceToolStripMenuItem.Name = "serviceToolStripMenuItem";
-            this.serviceToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
-            this.serviceToolStripMenuItem.Text = "Service";
+            this.serviceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.serviceToolStripMenuItem.Text = "Services";
+            this.serviceToolStripMenuItem.Click += new System.EventHandler(this.serviceToolStripMenuItem_Click);
             // 
             // toolStrip
             // 
@@ -247,13 +260,12 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // estimateToolStripMenuItem
+            // receiptsToolStripMenuItem
             // 
-            this.estimateToolStripMenuItem.Name = "estimateToolStripMenuItem";
-            this.estimateToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.estimateToolStripMenuItem.Text = "Estimate";
-            this.estimateToolStripMenuItem.Visible = false;
-            this.estimateToolStripMenuItem.Click += new System.EventHandler(this.estimateToolStripMenuItem_Click);
+            this.receiptsToolStripMenuItem.Name = "receiptsToolStripMenuItem";
+            this.receiptsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.receiptsToolStripMenuItem.Text = "Receipts";
+            this.receiptsToolStripMenuItem.Click += new System.EventHandler(this.receiptsToolStripMenuItem_Click);
             // 
             // MDIParent
             // 
@@ -264,6 +276,7 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MDIParent";
@@ -271,6 +284,7 @@
             this.Text = "Vasthu ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MDIParent_FormClosing);
+            this.Load += new System.EventHandler(this.MDIParent_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MDIParent_KeyDown);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -305,11 +319,12 @@
         private System.Windows.Forms.ToolStripMenuItem receiptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem expenseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem daybookToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem expenseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem estimateReportToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem serviceToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem estimateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem receiptsToolStripMenuItem;
     }
 }
 

@@ -20,18 +20,25 @@ namespace VasthuApp.Reports
 
         private void Daybook_Load(object sender, EventArgs e)
         {
+            dtpFrom.Value = DateTime.Today.AddDays((DateTime.Today.Day - 1) * -1);
+            dtpTo.Value = DateTime.Today;
+            dtpFrom.MaxDate = DateTime.Today;
+            dtpTo.MaxDate = DateTime.Today;
+
             BindGrid();
         }
         List<GridRowModel> getCustomerServices()
         {
             var list = db.CustomerServices
-               .Where(x => x.IsDeleted == false)
+               .Where(x => x.IsDeleted == false &&
+               (x.Date >= dtpFrom.Value.Date && x.Date <= dtpTo.Value.Date)
+               )
                .Select(x => new GridRowModel()
                {
                    Date = x.Date,
                    Type = "Customer Service",
                    Customer = x.CustomerName,
-                   Cr = x.NetTotal,
+                   Cr = x.GrandTotal,
                    Dr = 0
                }).ToList();
             return list;
@@ -40,6 +47,7 @@ namespace VasthuApp.Reports
         List<GridRowModel> getReceipts()
         {
             var list = db.Receipts
+              .Where(x => x.Date >= dtpFrom.Value.Date && x.Date <= dtpTo.Value.Date)
               .Select(x => new GridRowModel()
               {
                   Date = x.Date,
@@ -54,7 +62,8 @@ namespace VasthuApp.Reports
         List<GridRowModel> getExpenses()
         {
             var expenses = db.Expenses
-              .Where(x => x.IsDelete == false)
+              .Where(x => x.IsDelete == false &&
+               (x.Date.Value >= dtpFrom.Value.Date && x.Date.Value <= dtpTo.Value.Date))
               .Select(x => new GridRowModel()
               {
                   Cr = 0,
@@ -68,6 +77,7 @@ namespace VasthuApp.Reports
         List<GridRowModel> getEstimate()
         {
             var list = db.Estimates
+             .Where(x => (x.Date >= dtpFrom.Value.Date && x.Date <= dtpTo.Value.Date))
              .Select(x => new GridRowModel()
              {
                  Date = x.Date,
@@ -100,12 +110,14 @@ namespace VasthuApp.Reports
                 Cr = total_Cr,
                 Dr = total_Dr,
                 Customer = "Total",
-                Type = "",
-                Date = DateTime.Today.AddDays(1)
+                Type = ""
             };
-            masterList.Add(total_Row);
 
-            dataGridView1.DataSource = masterList.OrderBy(x => x.Date).ToList();
+            masterList = masterList.OrderBy(x => x.Date).ToList();
+            masterList.Add(total_Row);
+            dataGridView1.DataSource = masterList;
+           // dataGridView1.Rows.Add("", "", "Total", total_Cr, total_Dr);
+            
         }
 
 
@@ -119,6 +131,16 @@ namespace VasthuApp.Reports
             public string Customer { get; set; }
             public decimal? Cr { get; set; }
             public decimal? Dr { get; set; }
+        }
+
+        private void dtpFrom_ValueChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+
+        private void dtpTo_ValueChanged(object sender, EventArgs e)
+        {
+            BindGrid();
         }
     }
 }

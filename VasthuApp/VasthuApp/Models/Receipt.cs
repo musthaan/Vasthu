@@ -21,5 +21,8 @@ namespace VasthuApp.Models
         public string CustomerAddress { get; set; }
         public Nullable<decimal> Total { get; set; }
         public string Remark { get; set; }
+        public long ServiceId { get; set; }
+    
+        public virtual ServiceMaster ServiceMaster { get; set; }
     }
 }

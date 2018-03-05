@@ -36,7 +36,31 @@ namespace VasthuApp
 
         private void frmCustomerService_Load(object sender, EventArgs e)
         {
+            btnPrint.Enabled = true;
             ClearForm();
+
+            if (Mode == EntryMode.Edit && CustomerServiceId > 0)
+            {
+                try
+                {
+                    var service = db.CustomerServices.Where(x => x.Id == CustomerServiceId).FirstOrDefault();
+                    dtpServiceDate.Value = service.Date;
+                    txtName.Text = service.CustomerName;
+                    txtPhone.Text = service.CustomerPhone;
+                    txtAddress.Text = service.CustomerAddress;
+                    grdService.Rows.Clear();
+
+                    foreach (var detail in service.CustomerServiceDetails)
+                    {
+                        string[] row = new string[] { detail.ServiceId.ToString(), db.ServiceMasters.Find(detail.ServiceId).Name, detail.Note, detail.Amount.ToString() };
+                        grdService.Rows.Add(row);
+                    }
+                    CalculateTotal();
+                }
+                catch (Exception ex)
+                {
+                }
+            }
         }
 
 
@@ -62,14 +86,17 @@ namespace VasthuApp
 
         void CalculateTotal()
         {
-            var total = 0;
+            double total = 0;
             foreach (var r in grdService.Rows)
             {
                 var row = (DataGridViewRow)r;
-                var value = Convert.ToInt32(row.Cells[3].Value);
+                var value = Convert.ToDouble(row.Cells[3].Value);
                 total = total + value;
             }
             lblNetTotal.Text = total.ToString("0.00");
+            lblCGST.Text = (total * 0.09).ToString("0.00");
+            lblSGST.Text = (total * 0.09).ToString("0.00");
+            lblGrandTotal.Text = (total + (total * 0.09) + (total * 0.09)).ToString("0.00");
         }
 
         void BindServiceCombo()
@@ -136,11 +163,53 @@ namespace VasthuApp
                 ClearForm();
 
             }
+            else if (Mode == EntryMode.Edit)
+            {
+                var service = db.CustomerServices.Find(CustomerServiceId);
+                if (service != null)
+                {
+                    service.CGST = Convert.ToDecimal(lblCGST.Text.Trim());
+                    service.CustomerAddress = txtAddress.Text.Trim();
+                    service.CustomerName = txtName.Text.Trim();
+                    service.CustomerPhone = txtPhone.Text.Trim();
+                    service.Date = dtpServiceDate.Value;
+                    service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim());
+                    service.NetTotal = Convert.ToDecimal(lblNetTotal.Text.Trim());
+                    service.Note = "";
+                    service.SGST = Convert.ToDecimal(lblSGST.Text.Trim());
+
+                    service.CustomerServiceDetails.Clear();
+                    foreach (var r in grdService.Rows)
+                    {
+                        var row = (DataGridViewRow)r;
+
+                        var serviceId = Convert.ToInt32(row.Cells[0].Value);
+                        var note = row.Cells[2].Value.ToString();
+                        var amount = Convert.ToDouble(row.Cells[3].Value);
+
+                        var serviceDetails = new Models.CustomerServiceDetail()
+                        {
+                            Amount = Convert.ToDecimal(amount),
+                            Note = note,
+                            ServiceId = serviceId
+                        };
+                        service.CustomerServiceDetails.Add(serviceDetails);
+
+                    }
+                    db.SaveChanges();
+                    MessageBox.Show("Saved Successfully !");
+                }
+            }
+            DialogResult = DialogResult.OK;
         }
 
         private void print(CustomerService service)
         {
+            WebBrowser webBrowserForPrint = new WebBrowser();
+            webBrowserForPrint.DocumentCompleted +=
+                new WebBrowserDocumentCompletedEventHandler(printDocument);
 
+            webBrowserForPrint.Url = new Uri($@"{ Application.StartupPath}\report.html");
         }
 
         private void btnNameSearch_Click(object sender, EventArgs e)
@@ -152,6 +221,21 @@ namespace VasthuApp
                 txtPhone.Text = frm.SelectedCustomer.Phone;
                 txtAddress.Text = frm.SelectedCustomer.Address;
             }
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            WebBrowser webBrowserForPrint = new WebBrowser();
+            webBrowserForPrint.DocumentCompleted +=
+                new WebBrowserDocumentCompletedEventHandler(printDocument);
+
+            webBrowserForPrint.Url = new Uri($@"{ Application.StartupPath}\report.html");
+        }
+
+        void printDocument(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            ((WebBrowser)sender).Print();
+            ((WebBrowser)sender).Dispose();
         }
     }
 }

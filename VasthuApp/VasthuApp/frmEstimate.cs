@@ -14,7 +14,7 @@ namespace VasthuApp
     public partial class frmEstimate : Form
     {
         public Models.EntryMode Mode { get; set; }
-        public long CustomerServiceId { get; set; }
+        public long EstimateId { get; set; }
 
         Models.VasthuDBEntities db = new Models.VasthuDBEntities();
         public frmEstimate()
@@ -37,6 +37,28 @@ namespace VasthuApp
         private void frmCustomerService_Load(object sender, EventArgs e)
         {
             ClearForm();
+            if (Mode == EntryMode.Edit && EstimateId > 0)
+            {
+                try
+                {
+                    var service = db.Estimates.Where(x => x.Id == EstimateId).FirstOrDefault();
+                    dtpServiceDate.Value = service.Date;
+                    txtName.Text = service.CustomerName;
+                    txtPhone.Text = service.CustomerPhone;
+                    txtAddress.Text = service.CustomerAddress;
+                    grdService.Rows.Clear();
+
+                    foreach (var detail in service.EstimateDetails)
+                    {
+                        string[] row = new string[] { detail.ServiceId.ToString(), db.ServiceMasters.Find(detail.ServiceId).Name, detail.Note, detail.Amount.ToString() };
+                        grdService.Rows.Add(row);
+                    }
+                    CalculateTotal();
+                }
+                catch (Exception ex)
+                {
+                }
+            }
         }
 
 
@@ -62,11 +84,11 @@ namespace VasthuApp
 
         void CalculateTotal()
         {
-            var total = 0;
+            double total = 0;
             foreach (var r in grdService.Rows)
             {
                 var row = (DataGridViewRow)r;
-                var value = Convert.ToInt32(row.Cells[3].Value);
+                var value = Convert.ToDouble(row.Cells[3].Value);
                 total = total + value;
             }
             lblGrandTotal.Text = total.ToString("0.00");
@@ -139,6 +161,42 @@ namespace VasthuApp
                 ClearForm();
 
             }
+            else if (Mode == EntryMode.Edit)
+            {
+                var service = db.Estimates.Find(EstimateId);
+                if (service != null)
+                {
+                   
+                    service.CustomerAddress = txtAddress.Text.Trim();
+                    service.CustomerName = txtName.Text.Trim();
+                    service.CustomerPhone = txtPhone.Text.Trim();
+                    service.Date = dtpServiceDate.Value;
+                    service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim()); 
+                    service.Note = ""; 
+
+                    service.EstimateDetails.Clear();
+                    foreach (var r in grdService.Rows)
+                    {
+                        var row = (DataGridViewRow)r;
+
+                        var serviceId = Convert.ToInt32(row.Cells[0].Value);
+                        var note = row.Cells[2].Value.ToString();
+                        var amount = Convert.ToDouble(row.Cells[3].Value);
+
+                        var serviceDetails = new Models.EstimateDetail()
+                        {
+                            Amount = Convert.ToDecimal(amount),
+                            Note = note,
+                            ServiceId = serviceId
+                        };
+                        service.EstimateDetails.Add(serviceDetails);
+
+                    }
+                    db.SaveChanges();
+                    MessageBox.Show("Saved Successfully !");
+                }
+            }
+            DialogResult = DialogResult.OK;
         }
 
         private void print(Estimate service)
