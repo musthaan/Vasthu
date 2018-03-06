@@ -61,14 +61,16 @@ namespace VasthuApp.Reports
                     && (To.HasValue ? x.Date <= To.Value : true)
                     && (CategoryId.HasValue ? x.CustomerServiceDetails.Any(s => s.ServiceId == CategoryId.Value) : true)
                     )
-                    .Select(x => new
+                    .Select(x => new ServiceReportViewModel()
                     {
                         Id = x.Id,
-                        x.Date,
+                        Date = x.Date,
                         Client = x.CustomerName,
-                        x.GrandTotal
-                    });
-            dgview.DataSource = result.ToList();
+                        Amount = x.GrandTotal.Value
+                    }).ToList();
+            var total = result.Sum(x => x.Amount);
+            result.Add(new ServiceReportViewModel() { Id = -1, Client = "Total", Amount = total });
+            dgview.DataSource = result;
             dgview.Columns[0].Visible = false;
         }
 
@@ -87,13 +89,23 @@ namespace VasthuApp.Reports
                 e.RowIndex >= 0)
             {
                 var id = Convert.ToInt64(senderGrid.Rows[e.RowIndex].Cells[0].Value);
-                var frm = new frmCustomerService();
-                frm.Mode = Models.EntryMode.Edit;
-                frm.CustomerServiceId = id;
-                frm.ShowDialog();
-                onSearchClick();
+                if (id > 0)
+                {
+                    var frm = new frmCustomerService();
+                    frm.Mode = Models.EntryMode.Edit;
+                    frm.CustomerServiceId = id;
+                    frm.ShowDialog();
+                    onSearchClick();
+                }
             }
 
         }
+    }
+    class ServiceReportViewModel
+    {
+        public long Id { get; set; }
+        public DateTime? Date { get; set; }
+        public string Client { get; set; }
+        public decimal Amount { get; set; }
     }
 }

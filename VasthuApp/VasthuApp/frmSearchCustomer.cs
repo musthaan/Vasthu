@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,8 +26,8 @@ namespace VasthuApp
             masterList.AddRange(getCustomersInService());
             if (From == "estimate") masterList.AddRange(getCustomersInEstimate());
             masterList.AddRange(getCustomersInReceipt());
-
-            grdCustomer.DataSource = masterList.OrderBy(x => x.Name).ToList();
+            var uniqueCustomers = masterList.Select(o => new { o.Name, o.Phone , o.Address}).Distinct();
+            grdCustomer.DataSource = uniqueCustomers.ToList();
         }
 
         List<CustomerSearchGridRowModel> getCustomersInService()

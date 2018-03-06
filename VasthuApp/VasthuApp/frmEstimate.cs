@@ -83,7 +83,21 @@ namespace VasthuApp
             grdService.Rows.Clear();
             CalculateTotal();
         }
+        bool ValidateRowEntry()
+        {
+            decimal amount = 0;
+            if (!decimal.TryParse(txtAmount.Text.Trim(), out amount)) {
+                MessageBox.Show("Invalid Amount");
+                return false;
 
+            }
+            if(amount <= 0)
+            {
+                MessageBox.Show("Invalid Amount");
+                return false;
+            }
+            return true;
+        }
         void CalculateTotal()
         {
             double total = 0;
@@ -111,8 +125,8 @@ namespace VasthuApp
                 status = false;
             }
 
-            long total = 0;
-            long.TryParse(lblGrandTotal.Text.Trim(), out total);
+            decimal total = 0;
+            decimal.TryParse(lblGrandTotal.Text.Trim(), out total);
             if (total <= 0)
             {
                 MessageBox.Show("Invalid Entry!");
@@ -134,6 +148,8 @@ namespace VasthuApp
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (!ValidateRowEntry())
+                return;
             string[] row = new string[] { cmbService.SelectedValue.ToString(), cmbService.Text, txtNote.Text.Trim(), txtAmount.Text.Trim() };
             grdService.Rows.Add(row);
 

@@ -58,14 +58,16 @@ namespace VasthuApp.Reports
                     && (To.HasValue ? x.Date <= To.Value : true)
                     && (CategoryId.HasValue ? x.EstimateDetails.Any(s => s.ServiceId == CategoryId.Value) : true)
                     )
-                    .Select(x => new
+                    .Select(x => new EstimateReportViewModel()
                     {
                         Id = x.Id,
-                        x.Date,
+                        Date = x.Date,
                         Client = x.CustomerName,
-                        x.GrandTotal
-                    });
-            dgview.DataSource = result.ToList();
+                        Amount = x.GrandTotal.Value
+                    }).ToList();
+            var total = result.Sum(x => x.Amount);
+            result.Add(new EstimateReportViewModel() { Id = -1, Client = "Total", Amount = total });
+            dgview.DataSource = result;
             dgview.Columns[0].Visible = false;
         }
 
@@ -92,5 +94,13 @@ namespace VasthuApp.Reports
             }
 
         }
+    }
+
+    class EstimateReportViewModel
+    {
+        public long Id { get; set; }
+        public DateTime? Date { get; set; }
+        public string Client { get; set; }
+        public decimal Amount { get; set; }
     }
 }

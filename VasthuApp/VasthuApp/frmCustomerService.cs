@@ -116,8 +116,8 @@ namespace VasthuApp
                 status = false;
             }
 
-            long total = 0;
-            long.TryParse( lblGrandTotal.Text.Trim(), out total);
+            decimal total = 0;
+            decimal.TryParse( lblGrandTotal.Text.Trim(), out total);
             if (total <= 0)
             {
                 MessageBox.Show("Invalid Entry!");

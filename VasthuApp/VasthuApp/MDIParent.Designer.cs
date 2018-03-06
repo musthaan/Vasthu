@@ -281,6 +281,7 @@
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MDIParent";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

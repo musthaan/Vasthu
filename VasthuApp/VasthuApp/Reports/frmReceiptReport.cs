@@ -57,13 +57,15 @@ namespace VasthuApp.Reports
                     && (To.HasValue ? x.Date <= To.Value : true)
                     && (CategoryId.HasValue ? (x.ServiceId == CategoryId.Value) : true)
                     )
-                    .Select(x => new
+                    .Select(x => new ReceiptReportViewModel()
                     {
                         Id = x.Id,
-                        x.Date,
+                        Date = x.Date,
                         Client = x.CustomerName,
-                        Amount = x.Total
-                    });
+                        Amount = x.Total.Value
+                    }).ToList();
+            var total = result.Sum(x => x.Amount);
+            result.Add(new ReceiptReportViewModel() { Id = -1, Client = "Total", Amount = total });
             dgview.DataSource = result.ToList();
             dgview.Columns[0].Visible = false;
         }
@@ -79,5 +81,13 @@ namespace VasthuApp.Reports
         {
 
         }
+    }
+
+    class ReceiptReportViewModel
+    {
+        public long Id { get; set; }
+        public DateTime? Date { get; set; }
+        public string Client { get; set; }
+        public decimal Amount { get; set; }
     }
 }
