@@ -160,7 +160,7 @@
             this.Name = "frmExpenseEdit";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Expense";
+            this.Text = "Expenditure";
             this.Load += new System.EventHandler(this.frmExpenseEdit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

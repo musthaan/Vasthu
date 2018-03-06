@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VasthuApp.Models;
+using System.Data.Entity;
 
 namespace VasthuApp
 {
@@ -36,7 +37,8 @@ namespace VasthuApp
 
         private void frmCustomerService_Load(object sender, EventArgs e)
         {
-            btnPrint.Enabled = true;
+            btnPrint.Enabled = false;
+            btnDelete.Enabled = false;
             ClearForm();
 
             if (Mode == EntryMode.Edit && CustomerServiceId > 0)
@@ -56,6 +58,7 @@ namespace VasthuApp
                         grdService.Rows.Add(row);
                     }
                     CalculateTotal();
+                    btnDelete.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -75,10 +78,10 @@ namespace VasthuApp
             txtNote.Text = string.Empty;
             txtAmount.Text = string.Empty;
 
-            lblCGST.Text = "0.00";
+            // lblCGST.Text = "0.00";
             lblGrandTotal.Text = "0.00";
-            lblNetTotal.Text = "0.00";
-            lblSGST.Text = "0.00";
+            // lblNetTotal.Text = "0.00";
+            // lblSGST.Text = "0.00";
 
             grdService.Rows.Clear();
             CalculateTotal();
@@ -93,12 +96,36 @@ namespace VasthuApp
                 var value = Convert.ToDouble(row.Cells[3].Value);
                 total = total + value;
             }
-            lblNetTotal.Text = total.ToString("0.00");
-            lblCGST.Text = (total * 0.09).ToString("0.00");
-            lblSGST.Text = (total * 0.09).ToString("0.00");
-            lblGrandTotal.Text = (total + (total * 0.09) + (total * 0.09)).ToString("0.00");
+            //lblNetTotal.Text = total.ToString("0.00");
+            //lblCGST.Text = (total * 0.09).ToString("0.00");
+            //lblSGST.Text = (total * 0.09).ToString("0.00");
+            lblGrandTotal.Text = total.ToString("0.00");// (total + (total * 0.09) + (total * 0.09)).ToString("0.00");
         }
+        bool ValidateService() {
+            bool status = true;
 
+            if( string.IsNullOrEmpty( txtName.Text.Trim()))
+            {
+                MessageBox.Show("Client Name is Required!");
+                status = false;
+            }
+
+            if (string.IsNullOrEmpty(txtPhone.Text.Trim()))
+            {
+                MessageBox.Show("Client Phone No. is Required!");
+                status = false;
+            }
+
+            long total = 0;
+            long.TryParse( lblGrandTotal.Text.Trim(), out total);
+            if (total <= 0)
+            {
+                MessageBox.Show("Invalid Entry!");
+                status = false;
+            }
+
+            return status;
+        }
         void BindServiceCombo()
         {
             cmbService.DataSource = db.ServiceMasters.Where(x => x.IsActive == true).Select(x => new { Name = x.Name, Id = x.Id }).ToList();
@@ -122,18 +149,20 @@ namespace VasthuApp
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (!ValidateService())
+                return;
             if (Mode == Models.EntryMode.New)
             {
                 var service = new Models.CustomerService();
-                service.CGST = Convert.ToDecimal(lblCGST.Text.Trim());
+                service.CGST = 0;// Convert.ToDecimal(lblCGST.Text.Trim());
                 service.CustomerAddress = txtAddress.Text.Trim();
                 service.CustomerName = txtName.Text.Trim();
                 service.CustomerPhone = txtPhone.Text.Trim();
                 service.Date = dtpServiceDate.Value;
                 service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim());
-                service.NetTotal = Convert.ToDecimal(lblNetTotal.Text.Trim());
+                service.NetTotal = 0;// Convert.ToDecimal(lblNetTotal.Text.Trim());
                 service.Note = "";
-                service.SGST = Convert.ToDecimal(lblSGST.Text.Trim());
+                service.SGST = 0;// Convert.ToDecimal(lblSGST.Text.Trim());
 
 
                 foreach (var r in grdService.Rows)
@@ -168,15 +197,15 @@ namespace VasthuApp
                 var service = db.CustomerServices.Find(CustomerServiceId);
                 if (service != null)
                 {
-                    service.CGST = Convert.ToDecimal(lblCGST.Text.Trim());
+                    service.CGST = 0;// Convert.ToDecimal(lblCGST.Text.Trim());
                     service.CustomerAddress = txtAddress.Text.Trim();
                     service.CustomerName = txtName.Text.Trim();
                     service.CustomerPhone = txtPhone.Text.Trim();
                     service.Date = dtpServiceDate.Value;
                     service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim());
-                    service.NetTotal = Convert.ToDecimal(lblNetTotal.Text.Trim());
+                    service.NetTotal = 0;// Convert.ToDecimal(lblNetTotal.Text.Trim());
                     service.Note = "";
-                    service.SGST = Convert.ToDecimal(lblSGST.Text.Trim());
+                    service.SGST = 0;// Convert.ToDecimal(lblSGST.Text.Trim());
 
                     service.CustomerServiceDetails.Clear();
                     foreach (var r in grdService.Rows)
@@ -212,6 +241,10 @@ namespace VasthuApp
             webBrowserForPrint.Url = new Uri($@"{ Application.StartupPath}\report.html");
         }
 
+        void generateReport()
+        {
+
+        }
         private void btnNameSearch_Click(object sender, EventArgs e)
         {
             frmSearchCustomer frm = new frmSearchCustomer();
@@ -236,6 +269,26 @@ namespace VasthuApp
         {
             ((WebBrowser)sender).Print();
             ((WebBrowser)sender).Dispose();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure to delete ?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                var model = db.CustomerServices.Find(CustomerServiceId);
+                if (model != null)
+                {
+                    model.IsDeleted = true;
+                    db.SaveChanges();
+                    MessageBox.Show("Service Deleted!");
+                    DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Error!");
+                }
+            }
         }
     }
 }

@@ -58,6 +58,7 @@
             this.btnPrint = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnNameSearch = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grdService)).BeginInit();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -305,7 +306,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(176, 495);
+            this.btnCancel.Location = new System.Drawing.Point(257, 495);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 10;
@@ -326,12 +327,23 @@
             this.btnNameSearch.UseVisualStyleBackColor = false;
             this.btnNameSearch.Click += new System.EventHandler(this.btnNameSearch_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(176, 495);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 25;
+            this.btnDelete.Text = "&Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // frmEstimate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(737, 527);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnNameSearch);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnPrint);
@@ -399,5 +411,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Service;
         private System.Windows.Forms.DataGridViewTextBoxColumn Note;
         private System.Windows.Forms.DataGridViewTextBoxColumn Amount;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

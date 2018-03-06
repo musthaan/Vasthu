@@ -36,6 +36,7 @@ namespace VasthuApp
 
         private void frmCustomerService_Load(object sender, EventArgs e)
         {
+            btnDelete.Enabled = false;
             ClearForm();
             if (Mode == EntryMode.Edit && EstimateId > 0)
             {
@@ -54,6 +55,7 @@ namespace VasthuApp
                         grdService.Rows.Add(row);
                     }
                     CalculateTotal();
+                    btnDelete.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -73,7 +75,7 @@ namespace VasthuApp
             txtNote.Text = string.Empty;
             txtAmount.Text = string.Empty;
 
-           // lblCGST.Text = "0.00";
+            // lblCGST.Text = "0.00";
             lblGrandTotal.Text = "0.00";
             //lblNetTotal.Text = "0.00";
             //lblSGST.Text = "0.00";
@@ -93,7 +95,32 @@ namespace VasthuApp
             }
             lblGrandTotal.Text = total.ToString("0.00");
         }
+        bool ValidateService()
+        {
+            bool status = true;
 
+            if (string.IsNullOrEmpty(txtName.Text.Trim()))
+            {
+                MessageBox.Show("Client Name is Required!");
+                status = false;
+            }
+
+            if (string.IsNullOrEmpty(txtPhone.Text.Trim()))
+            {
+                MessageBox.Show("Client Phone No. is Required!");
+                status = false;
+            }
+
+            long total = 0;
+            long.TryParse(lblGrandTotal.Text.Trim(), out total);
+            if (total <= 0)
+            {
+                MessageBox.Show("Invalid Entry!");
+                status = false;
+            }
+
+            return status;
+        }
         void BindServiceCombo()
         {
             cmbService.DataSource = db.ServiceMasters
@@ -120,10 +147,13 @@ namespace VasthuApp
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (!ValidateService())
+                return;
+
             if (Mode == Models.EntryMode.New)
             {
                 var service = new Models.Estimate();
-                
+
                 service.CustomerAddress = txtAddress.Text.Trim();
                 service.CustomerName = txtName.Text.Trim();
                 service.CustomerPhone = txtPhone.Text.Trim();
@@ -131,7 +161,7 @@ namespace VasthuApp
                 service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim());
                 service.NetTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim());
                 service.Note = "";
-                
+
 
 
                 foreach (var r in grdService.Rows)
@@ -166,13 +196,13 @@ namespace VasthuApp
                 var service = db.Estimates.Find(EstimateId);
                 if (service != null)
                 {
-                   
+
                     service.CustomerAddress = txtAddress.Text.Trim();
                     service.CustomerName = txtName.Text.Trim();
                     service.CustomerPhone = txtPhone.Text.Trim();
                     service.Date = dtpServiceDate.Value;
-                    service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim()); 
-                    service.Note = ""; 
+                    service.GrandTotal = Convert.ToDecimal(lblGrandTotal.Text.Trim());
+                    service.Note = "";
 
                     service.EstimateDetails.Clear();
                     foreach (var r in grdService.Rows)
@@ -207,11 +237,32 @@ namespace VasthuApp
         private void btnNameSearch_Click(object sender, EventArgs e)
         {
             frmSearchCustomer frm = new frmSearchCustomer();
+            frm.From = "estimate";
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 txtName.Text = frm.SelectedCustomer.Name;
                 txtPhone.Text = frm.SelectedCustomer.Phone;
                 txtAddress.Text = frm.SelectedCustomer.Address;
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure to delete ?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                var model = db.Estimates.Find(EstimateId);
+                if (model != null)
+                {
+                    model.IsDeleted = true;
+                    db.SaveChanges();
+                    MessageBox.Show("Estimate Deleted!");
+                    DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Error!");
+                }
             }
         }
     }

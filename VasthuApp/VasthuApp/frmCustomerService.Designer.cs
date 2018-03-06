@@ -51,27 +51,16 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.lblNetTotal = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.lblCGSTx = new System.Windows.Forms.Label();
-            this.lblCGST = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.lblGrandTotal = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.lblSGSTx = new System.Windows.Forms.Label();
-            this.lblSGST = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnNameSearch = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grdService)).BeginInit();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtpServiceDate
@@ -263,75 +252,11 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.lblNetTotal);
-            this.panel2.Location = new System.Drawing.Point(571, 483);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(152, 16);
-            this.panel2.TabIndex = 19;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label10.Location = new System.Drawing.Point(0, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(51, 13);
-            this.label10.TabIndex = 20;
-            this.label10.Text = "Net Total";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblNetTotal
-            // 
-            this.lblNetTotal.AutoSize = true;
-            this.lblNetTotal.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblNetTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNetTotal.Location = new System.Drawing.Point(99, 0);
-            this.lblNetTotal.Name = "lblNetTotal";
-            this.lblNetTotal.Size = new System.Drawing.Size(53, 13);
-            this.lblNetTotal.TabIndex = 19;
-            this.lblNetTotal.Text = "1000.00";
-            this.lblNetTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.lblCGSTx);
-            this.panel3.Controls.Add(this.lblCGST);
-            this.panel3.Location = new System.Drawing.Point(571, 505);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(152, 16);
-            this.panel3.TabIndex = 21;
-            // 
-            // lblCGSTx
-            // 
-            this.lblCGSTx.AutoSize = true;
-            this.lblCGSTx.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblCGSTx.Location = new System.Drawing.Point(0, 0);
-            this.lblCGSTx.Name = "lblCGSTx";
-            this.lblCGSTx.Size = new System.Drawing.Size(36, 13);
-            this.lblCGSTx.TabIndex = 20;
-            this.lblCGSTx.Text = "CGST";
-            this.lblCGSTx.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblCGST
-            // 
-            this.lblCGST.AutoSize = true;
-            this.lblCGST.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblCGST.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCGST.Location = new System.Drawing.Point(99, 0);
-            this.lblCGST.Name = "lblCGST";
-            this.lblCGST.Size = new System.Drawing.Size(53, 13);
-            this.lblCGST.TabIndex = 19;
-            this.lblCGST.Text = "1000.00";
-            this.lblCGST.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // panel4
             // 
             this.panel4.Controls.Add(this.label12);
             this.panel4.Controls.Add(this.lblGrandTotal);
-            this.panel4.Location = new System.Drawing.Point(571, 549);
+            this.panel4.Location = new System.Drawing.Point(571, 486);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(152, 21);
             this.panel4.TabIndex = 23;
@@ -359,41 +284,9 @@
             this.lblGrandTotal.Text = "1000.00";
             this.lblGrandTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.lblSGSTx);
-            this.panel5.Controls.Add(this.lblSGST);
-            this.panel5.Location = new System.Drawing.Point(571, 527);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(152, 16);
-            this.panel5.TabIndex = 22;
-            // 
-            // lblSGSTx
-            // 
-            this.lblSGSTx.AutoSize = true;
-            this.lblSGSTx.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblSGSTx.Location = new System.Drawing.Point(0, 0);
-            this.lblSGSTx.Name = "lblSGSTx";
-            this.lblSGSTx.Size = new System.Drawing.Size(36, 13);
-            this.lblSGSTx.TabIndex = 20;
-            this.lblSGSTx.Text = "SGST";
-            this.lblSGSTx.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblSGST
-            // 
-            this.lblSGST.AutoSize = true;
-            this.lblSGST.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblSGST.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSGST.Location = new System.Drawing.Point(99, 0);
-            this.lblSGST.Name = "lblSGST";
-            this.lblSGST.Size = new System.Drawing.Size(53, 13);
-            this.lblSGST.TabIndex = 19;
-            this.lblSGST.Text = "1000.00";
-            this.lblSGST.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(20, 539);
+            this.btnSave.Location = new System.Drawing.Point(15, 483);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -404,7 +297,7 @@
             // btnPrint
             // 
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(100, 539);
+            this.btnPrint.Location = new System.Drawing.Point(95, 483);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 23);
             this.btnPrint.TabIndex = 9;
@@ -414,7 +307,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(181, 539);
+            this.btnCancel.Location = new System.Drawing.Point(257, 483);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 10;
@@ -435,20 +328,28 @@
             this.btnNameSearch.UseVisualStyleBackColor = false;
             this.btnNameSearch.Click += new System.EventHandler(this.btnNameSearch_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(176, 483);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 25;
+            this.btnDelete.Text = "&Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // frmCustomerService
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(737, 575);
+            this.ClientSize = new System.Drawing.Size(737, 515);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnNameSearch);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel5);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtAmount);
@@ -471,17 +372,11 @@
             this.Name = "frmCustomerService";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Customer Service";
+            this.Text = "Client Service";
             this.Load += new System.EventHandler(this.frmCustomerService_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdService)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -506,18 +401,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtAmount;
         private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label lblNetTotal;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label lblCGSTx;
-        private System.Windows.Forms.Label lblCGST;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label lblGrandTotal;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label lblSGSTx;
-        private System.Windows.Forms.Label lblSGST;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.Button btnCancel;
@@ -526,5 +412,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Service;
         private System.Windows.Forms.DataGridViewTextBoxColumn Note;
         private System.Windows.Forms.DataGridViewTextBoxColumn Amount;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

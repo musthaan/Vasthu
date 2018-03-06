@@ -36,8 +36,8 @@ namespace VasthuApp.Reports
                .Select(x => new GridRowModel()
                {
                    Date = x.Date,
-                   Type = "Customer Service",
-                   Customer = x.CustomerName,
+                   Type = "Client Service",
+                   Client = x.CustomerName,
                    Cr = x.GrandTotal,
                    Dr = 0
                }).ToList();
@@ -51,8 +51,8 @@ namespace VasthuApp.Reports
               .Select(x => new GridRowModel()
               {
                   Date = x.Date,
-                  Type = "Receipt",
-                  Customer = x.CustomerName,
+                  Type = "Income",
+                  Client = x.CustomerName,
                   Cr = x.Total,
                   Dr = 0
               }).ToList();
@@ -67,10 +67,10 @@ namespace VasthuApp.Reports
               .Select(x => new GridRowModel()
               {
                   Cr = 0,
-                  Customer = x.ExpenseCategory.Name,
+                  Client = x.ExpenseCategory.Name,
                   Date = x.Date,
                   Dr = x.Amount,
-                  Type = "Expense"
+                  Type = "Expenditure"
               });
             return expenses.ToList();
         }
@@ -82,7 +82,7 @@ namespace VasthuApp.Reports
              {
                  Date = x.Date,
                  Type = "Estimate",
-                 Customer = x.CustomerName,
+                 Client = x.CustomerName,
                  Cr = x.NetTotal,
                  Dr = 0
              }).ToList();
@@ -109,7 +109,7 @@ namespace VasthuApp.Reports
             {
                 Cr = total_Cr,
                 Dr = total_Dr,
-                Customer = "Total",
+                Client = "Total",
                 Type = ""
             };
 
@@ -128,7 +128,7 @@ namespace VasthuApp.Reports
         {
             public DateTime? Date { get; set; }
             public string Type { get; set; }
-            public string Customer { get; set; }
+            public string Client { get; set; }
             public decimal? Cr { get; set; }
             public decimal? Dr { get; set; }
         }

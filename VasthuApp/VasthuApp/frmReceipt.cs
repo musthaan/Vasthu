@@ -56,6 +56,7 @@ namespace VasthuApp
                 receipt.CustomerPhone = txtPhone.Text.Trim();
                 receipt.Date = dtpServiceDate.Value;
                 receipt.Remark = txtNote.Text.Trim();
+                receipt.ServiceId = Convert.ToInt64(cmbService.SelectedValue);
                 receipt.Total= Convert.ToDecimal(txtAmount.Text.Trim()); 
 
 

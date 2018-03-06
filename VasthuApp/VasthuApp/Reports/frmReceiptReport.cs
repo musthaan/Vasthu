@@ -61,7 +61,7 @@ namespace VasthuApp.Reports
                     {
                         Id = x.Id,
                         x.Date,
-                        x.CustomerName,
+                        Client = x.CustomerName,
                         Amount = x.Total
                     });
             dgview.DataSource = result.ToList();
@@ -73,6 +73,11 @@ namespace VasthuApp.Reports
             dtpFrom.Value = DateTime.Today.AddDays((DateTime.Today.Day - 1) * -1);
             Search(DateTime.Today.AddDays((DateTime.Today.Day - 1) * -1), DateTime.Now.Date, null);
             BindServiceCombo();
+        }
+
+        private void btnSearch_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

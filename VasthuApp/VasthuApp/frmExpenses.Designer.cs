@@ -38,12 +38,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnNew = new System.Windows.Forms.Button();
             this.grdExpense = new System.Windows.Forms.DataGridView();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grdExpense)).BeginInit();
             this.SuspendLayout();
             // 
@@ -125,19 +125,6 @@
             this.grdExpense.TabIndex = 7;
             this.grdExpense.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdExpense_CellDoubleClick);
             // 
-            // btnSearch
-            // 
-            this.btnSearch.BackColor = System.Drawing.Color.White;
-            this.btnSearch.BackgroundImage = global::VasthuApp.Properties.Resources.icon_search_grey_1x;
-            this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Location = new System.Drawing.Point(531, 30);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(21, 19);
-            this.btnSearch.TabIndex = 53;
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
             // colId
             // 
             this.colId.DataPropertyName = "Id";
@@ -171,6 +158,19 @@
             this.colAmount.HeaderText = "Amount";
             this.colAmount.Name = "colAmount";
             // 
+            // btnSearch
+            // 
+            this.btnSearch.BackColor = System.Drawing.Color.White;
+            this.btnSearch.BackgroundImage = global::VasthuApp.Properties.Resources.icon_search_grey_1x;
+            this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.Location = new System.Drawing.Point(531, 30);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(21, 19);
+            this.btnSearch.TabIndex = 53;
+            this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // frmExpenses
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -192,7 +192,7 @@
             this.Name = "frmExpenses";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Expenses";
+            this.Text = "Expenditure";
             this.Load += new System.EventHandler(this.frmExpenses_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdExpense)).EndInit();
             this.ResumeLayout(false);

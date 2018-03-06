@@ -66,7 +66,7 @@
             this.Name = "frmSearchCustomer";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Search Customer";
+            this.Text = "Search Clients";
             ((System.ComponentModel.ISupportInitialize)(this.grdCustomer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -62,7 +62,7 @@ namespace VasthuApp.Reports
                     {
                         Id = x.Id,
                         x.Date,
-                        x.CustomerName,
+                        Client = x.CustomerName,
                         x.GrandTotal
                     });
             dgview.DataSource = result.ToList();

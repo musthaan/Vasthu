@@ -18,10 +18,8 @@ namespace VasthuApp.Reports
         }
 
         Models.VasthuDBEntities db = new Models.VasthuDBEntities();
-
-        private void btnSearch_Click(object sender, EventArgs e)
+        void onSearchClick()
         {
-
             if (cmbCategory.SelectedValue == null || cmbCategory.SelectedValue == "0" || Convert.ToInt64(cmbCategory.SelectedValue) == 0)
             {
                 Search(dtpFrom.Value, dtpTo.Value, null);
@@ -32,6 +30,11 @@ namespace VasthuApp.Reports
                 serviceId = Convert.ToInt32(cmbCategory.SelectedValue);
                 Search(dtpFrom.Value, dtpTo.Value, serviceId);
             }
+        }
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            onSearchClick();
+
         }
         class ComboDataSource
         {
@@ -62,7 +65,7 @@ namespace VasthuApp.Reports
                     {
                         Id = x.Id,
                         x.Date,
-                        x.CustomerName,
+                        Client = x.CustomerName,
                         x.GrandTotal
                     });
             dgview.DataSource = result.ToList();
@@ -88,6 +91,7 @@ namespace VasthuApp.Reports
                 frm.Mode = Models.EntryMode.Edit;
                 frm.CustomerServiceId = id;
                 frm.ShowDialog();
+                onSearchClick();
             }
 
         }

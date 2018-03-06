@@ -12,6 +12,7 @@ namespace VasthuApp
 {
     public partial class frmSearchCustomer : Form
     {
+        public string From { get; set; }
         public frmSearchCustomer()
         {
             InitializeComponent();
@@ -23,7 +24,7 @@ namespace VasthuApp
 
             List<CustomerSearchGridRowModel> masterList = new List<CustomerSearchGridRowModel>();
             masterList.AddRange(getCustomersInService());
-            masterList.AddRange(getCustomersInEstimate());
+            if (From == "estimate") masterList.AddRange(getCustomersInEstimate());
             masterList.AddRange(getCustomersInReceipt());
 
             grdCustomer.DataSource = masterList.OrderBy(x => x.Name).ToList();
