@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -86,12 +87,13 @@ namespace VasthuApp
         bool ValidateRowEntry()
         {
             decimal amount = 0;
-            if (!decimal.TryParse(txtAmount.Text.Trim(), out amount)) {
+            if (!decimal.TryParse(txtAmount.Text.Trim(), out amount))
+            {
                 MessageBox.Show("Invalid Amount");
                 return false;
 
             }
-            if(amount <= 0)
+            if (amount <= 0)
             {
                 MessageBox.Show("Invalid Amount");
                 return false;
@@ -247,7 +249,65 @@ namespace VasthuApp
 
         private void print(Estimate service)
         {
+            RegistryHandler objRegistryHandler = new RegistryHandler();
+            //
+            objRegistryHandler.TakeBackUp();
+            objRegistryHandler.SetPrintSetup();
+            var folderPath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+            var file_path = System.IO.Path.Combine(folderPath, @"Reports\report-customer-service.html");
+            string billContent = System.IO.File.ReadAllText(file_path);
 
+            billContent = billContent.Replace("{{DATE}}", service.Date.ToString("dd MMM, yyyy"));
+            billContent = billContent.Replace("{{BILLNO}}", service.Id.ToString().PadLeft(6, '0'));
+            billContent = billContent.Replace("{{CUSTOMER_NAME}}", service.CustomerName);
+            billContent = billContent.Replace("{{CUSTOMER_ADDRESS}}", service.CustomerAddress);
+            billContent = billContent.Replace("{{CUSTOMER_PHONE}}", service.CustomerPhone);
+
+            var strTableRows = string.Empty;
+            var index = 1;
+            foreach (var d in service.EstimateDetails)
+            {
+                var serviceName = db.ServiceMasters.Find(d.ServiceId).Name;
+                var _row = $@"  <tr>
+                        <td style='text-align: center;'>{index++}</td>
+                        <td style='text-align: left;'>{serviceName}</td>
+                        <td style='text-align: right;'>{d.Amount.Value.ToString("0.00")}</td>
+                    </tr> ";
+                strTableRows += _row;
+            }
+            var _totalRow = $@" <tr>
+                        <td colspan='2' style='text-align: right;'><b>Total:</b></td>
+                        <td style='text-align: right;'>{service.GrandTotal.Value.ToString("0.00")}</td>
+                    </tr>";
+
+            billContent = billContent.Replace("{{SERVICE_ROW}}", strTableRows);
+            billContent = billContent.Replace("{{SERVICE_TOTAL_ROW}}", _totalRow);
+
+
+
+            var outputFilePath = System.IO.Path.Combine(folderPath, "customer-service.html");
+            if (System.IO.File.Exists(outputFilePath))
+                System.IO.File.Delete(outputFilePath);
+            System.IO.File.WriteAllText(outputFilePath, billContent);
+
+
+            WebBrowser webBrowserForPrint = new WebBrowser();
+            webBrowserForPrint.DocumentCompleted +=
+                new WebBrowserDocumentCompletedEventHandler(printDocument);
+
+            webBrowserForPrint.Url = new Uri(outputFilePath);
+
+
+            objRegistryHandler.Restore();
+                }
+
+
+
+
+        void printDocument(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            ((WebBrowser)sender).Print();
+            ((WebBrowser)sender).Dispose();
         }
 
         private void btnNameSearch_Click(object sender, EventArgs e)
@@ -282,4 +342,66 @@ namespace VasthuApp
             }
         }
     }
+
+    public class RegistryHandler
+    {
+        public string MarginTop { get; set; }
+        public string MarginLeft { get; set; }
+        public string MarginRight { get; set; }
+        public string MarginBottom { get; set; }
+
+        public string Header { get; set; }
+        public string Footer { get; set; }
+
+
+        public void TakeBackUp()
+        {
+            string keyName = @"Software\Microsoft\Internet Explorer\PageSetup";
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
+            {
+                if (key != null)
+                {
+                    Footer = key.GetValue("footer").ToString();
+                    Header = key.GetValue("header").ToString();
+                    MarginBottom = key.GetValue("margin_bottom").ToString();
+                    MarginLeft = key.GetValue("margin_left").ToString();
+                    MarginRight = key.GetValue("margin_right").ToString();
+                    MarginTop = key.GetValue("margin_top").ToString();
+                }
+            }
+        }
+        public void SetPrintSetup()
+        {
+            string keyName = @"Software\Microsoft\Internet Explorer\PageSetup";
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
+            {
+                if (key != null)
+                {
+                    key.SetValue("footer", "");
+                    key.SetValue("header", "");
+                    key.SetValue("margin_bottom", "0.25");
+                    key.SetValue("margin_left", "0.25");
+                    key.SetValue("margin_right", "0.25");
+                    key.SetValue("margin_top", "0.25");
+                }
+            }
+        }
+        public void Restore()
+        {
+            string keyName = @"Software\Microsoft\Internet Explorer\PageSetup";
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
+            {
+                if (key != null)
+                {
+                    key.SetValue("footer", this.Footer);
+                    key.SetValue("header", this.Header);
+                    key.SetValue("margin_bottom", this.MarginBottom);
+                    key.SetValue("margin_left", this.MarginLeft);
+                    key.SetValue("margin_right", this.MarginRight);
+                    key.SetValue("margin_top", this.MarginTop);
+                }
+            }
+        }
+    }
 }
+

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VasthuApp.Models;
 using System.Data.Entity;
+using Microsoft.Win32;
 
 namespace VasthuApp
 {
@@ -101,10 +102,11 @@ namespace VasthuApp
             //lblSGST.Text = (total * 0.09).ToString("0.00");
             lblGrandTotal.Text = total.ToString("0.00");// (total + (total * 0.09) + (total * 0.09)).ToString("0.00");
         }
-        bool ValidateService() {
+        bool ValidateService()
+        {
             bool status = true;
 
-            if( string.IsNullOrEmpty( txtName.Text.Trim()))
+            if (string.IsNullOrEmpty(txtName.Text.Trim()))
             {
                 MessageBox.Show("Client Name is Required!");
                 status = false;
@@ -117,7 +119,7 @@ namespace VasthuApp
             }
 
             decimal total = 0;
-            decimal.TryParse( lblGrandTotal.Text.Trim(), out total);
+            decimal.TryParse(lblGrandTotal.Text.Trim(), out total);
             if (total <= 0)
             {
                 MessageBox.Show("Invalid Entry!");
@@ -126,6 +128,24 @@ namespace VasthuApp
 
             return status;
         }
+
+        bool ValidateRowEntry()
+        {
+            decimal amount = 0;
+            if (!decimal.TryParse(txtAmount.Text.Trim(), out amount))
+            {
+                MessageBox.Show("Invalid Amount");
+                return false;
+
+            }
+            if (amount <= 0)
+            {
+                MessageBox.Show("Invalid Amount");
+                return false;
+            }
+            return true;
+        }
+
         void BindServiceCombo()
         {
             cmbService.DataSource = db.ServiceMasters.Where(x => x.IsActive == true).Select(x => new { Name = x.Name, Id = x.Id }).ToList();
@@ -136,6 +156,8 @@ namespace VasthuApp
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (!ValidateRowEntry())
+                return;
             string[] row = new string[] { cmbService.SelectedValue.ToString(), cmbService.Text, txtNote.Text.Trim(), txtAmount.Text.Trim() };
             grdService.Rows.Add(row);
 
@@ -186,7 +208,14 @@ namespace VasthuApp
                 db.SaveChanges();
                 if (MessageBox.Show("Saved Successfully ! Do you want to print?", "Success", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+
+                    RegistryHandler objRegistryHandler = new RegistryHandler();
+                    objRegistryHandler.TakeBackUp();
+                    objRegistryHandler.SetPrintSetup();
+
                     print(service);
+
+                    objRegistryHandler.Restore();
                 }
 
                 ClearForm();
@@ -234,16 +263,53 @@ namespace VasthuApp
 
         private void print(CustomerService service)
         {
+
             WebBrowser webBrowserForPrint = new WebBrowser();
             webBrowserForPrint.DocumentCompleted +=
                 new WebBrowserDocumentCompletedEventHandler(printDocument);
 
-            webBrowserForPrint.Url = new Uri($@"{ Application.StartupPath}\report.html");
+            webBrowserForPrint.Url = new Uri(generateReport(service));
         }
 
-        void generateReport()
+        string generateReport(CustomerService service)
         {
+            var folderPath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+            var file_path = System.IO.Path.Combine(folderPath, @"Reports\report-customer-service.html");
+            string billContent = System.IO.File.ReadAllText(file_path);
 
+            billContent = billContent.Replace("{{DATE}}", service.Date.ToString("dd MMM, yyyy"));
+            billContent = billContent.Replace("{{BILLNO}}", service.Id.ToString().PadLeft(6, '0'));
+            billContent = billContent.Replace("{{CUSTOMER_NAME}}", service.CustomerName);
+            billContent = billContent.Replace("{{CUSTOMER_ADDRESS}}", service.CustomerAddress);
+            billContent = billContent.Replace("{{CUSTOMER_PHONE}}", service.CustomerPhone);
+
+            var strTableRows = string.Empty;
+            var index = 1;
+            foreach (var d in service.CustomerServiceDetails)
+            {
+                var serviceName = db.ServiceMasters.Find(d.ServiceId).Name;
+                var _row = $@"  <tr>
+                        <td style='text-align: center;'>{index++}</td>
+                        <td style='text-align: left;'>{serviceName}</td>
+                        <td style='text-align: right;'>{d.Amount.Value.ToString("0.00")}</td>
+                    </tr> ";
+                strTableRows += _row;
+            }
+            var _totalRow = $@" <tr>
+                        <td colspan='2' style='text-align: right;'><b>Total:</b></td>
+                        <td style='text-align: right;'>{service.GrandTotal.Value.ToString("0.00")}</td>
+                    </tr>";
+
+            billContent = billContent.Replace("{{SERVICE_ROW}}", strTableRows);
+            billContent = billContent.Replace("{{SERVICE_TOTAL_ROW}}", _totalRow);
+
+
+
+            var outputFilePath = System.IO.Path.Combine(folderPath, "customer-service.html");
+            if (System.IO.File.Exists(outputFilePath))
+                System.IO.File.Delete(outputFilePath);
+            System.IO.File.WriteAllText(outputFilePath, billContent);
+            return outputFilePath;
         }
         private void btnNameSearch_Click(object sender, EventArgs e)
         {

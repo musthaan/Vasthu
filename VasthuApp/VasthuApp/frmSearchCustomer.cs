@@ -90,12 +90,19 @@ namespace VasthuApp
 
             if (e.RowIndex >= 0)
             {
-                var id = Convert.ToInt64(senderGrid.Rows[e.RowIndex].Cells[1].Value);
-                SelectedCustomer = new CustomerSearchGridRowModel();
-                SelectedCustomer.Name = senderGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
-                SelectedCustomer.Phone = senderGrid.Rows[e.RowIndex].Cells[1].Value.ToString();
-                SelectedCustomer.Address = senderGrid.Rows[e.RowIndex].Cells[2].Value.ToString();
-                DialogResult = DialogResult.OK;
+                try
+                {
+        //            var id = Convert.ToInt64(senderGrid.Rows[e.RowIndex].Cells[1].Value);
+                    SelectedCustomer = new CustomerSearchGridRowModel();
+                    SelectedCustomer.Name = senderGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
+                    SelectedCustomer.Phone = senderGrid.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    SelectedCustomer.Address = senderGrid.Rows[e.RowIndex].Cells[2].Value.ToString();
+                    DialogResult = DialogResult.OK;
+                }
+                catch (Exception)
+                {
+                    
+                }
                 this.Close();
             }
         }

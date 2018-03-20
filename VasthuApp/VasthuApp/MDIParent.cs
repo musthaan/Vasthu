@@ -114,5 +114,11 @@ namespace VasthuApp
             Reports.frmReceiptReport frm = new Reports.frmReceiptReport() { MdiParent = this };
             frm.Show();
         }
+
+        private void profitAndLossToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reports.frmProfitAndLoss frm = new Reports.frmProfitAndLoss() { MdiParent = this };
+            frm.Show();
+        }
     }
 }

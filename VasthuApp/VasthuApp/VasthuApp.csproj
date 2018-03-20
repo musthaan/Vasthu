@@ -193,6 +193,12 @@
     <Compile Include="Reports\frmEstimateReport.Designer.cs">
       <DependentUpon>frmEstimateReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\frmProfitAndLoss.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\frmProfitAndLoss.Designer.cs">
+      <DependentUpon>frmProfitAndLoss.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\frmReceiptReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -259,6 +265,9 @@
     <EmbeddedResource Include="Reports\frmEstimateReport.resx">
       <DependentUpon>frmEstimateReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\frmProfitAndLoss.resx">
+      <DependentUpon>frmProfitAndLoss.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\frmReceiptReport.resx">
       <DependentUpon>frmReceiptReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -292,6 +301,9 @@
     <None Include="Resources\lock-images.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="logo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Models\DbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DbModel.Context.cs</LastGenOutput>
@@ -304,6 +316,9 @@
     </Content>
     <Content Include="planet_512x512.ico" />
     <None Include="Resources\unnamed.png" />
+    <Content Include="Reports\report-customer-service.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

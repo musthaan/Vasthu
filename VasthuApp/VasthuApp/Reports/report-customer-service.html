@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Report</title>
+    <style>
+        p {
+            margin: 0
+        }
+        td {
+            border: 1px solid #e2e2e2;
+            padding: 10px;
+        }
+        th {
+            border: 1px solid #e2e2e2;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body style="margin:0; padding:0; height: 396px;width: 1122px;background-color: #e2e2e2;">
+    <div style="background-color: #FFF;">
+        <div class="width:100%">
+            <div style="width:300px;float:left">
+                <img src="logo.jpg" height="130px" alt="" />
+            </div>
+
+            <div style="width:300px;float:right">
+                <p style="margin: 0;font-size:20px;"> <b>Vastu Niketham</b></p>
+                <p style="margin: 0;">Door No. 441</p>
+                <p style="margin: 0;">First Floor, Kaithavana building</p>
+                <p style="margin: 0;">Pazhakulam PO, Adoor</p>
+                <p style="margin: 0;">Pathanamthitta Dist, Kerala</p>
+                <p style="margin: 0;">Mob: 9188177838, 04734237727</p>
+                <p style="margin: 0;">www.vastuniketham.com</p>
+                <p style="margin: 0;">vastunikethamadoor@gmail.com</p>
+            </div>
+        </div>
+        <div style="float:none;clear:both;"></div>
+        <hr/>
+        <p>
+            <h3 style="text-align: center">RECEIPT</h3>
+        </p>
+        <p style="text-align: right;margin: 0 10px;"><b>Date : </b>{{DATE}}</p>
+        <p style="text-align: right;margin: 0 10px;"><b>Bill No. : </b>#{{BILLNO}}</p>
+        <p style="margin: 0 50px;"> <b>Billed To:</b></p>
+        <p style="margin: 0 100px;"> {{CUSTOMER_NAME}}</p>
+        <p style="margin: 0 100px;"> {{CUSTOMER_ADDRESS}}</p>
+        <p style="margin: 0 100px;"> {{CUSTOMER_PHONE}}</p>
+        <div style="width:95%;margin: 10px auto;">
+            <table border="0" style="width:100%" cellpadding:0 cellspacing=0>
+                <thead>
+                    <tr>
+                        <th style="text-align: center;background: #e2e2e2;width: 50px;">Sl No.</th>
+                        <th style="text-align: left;background: #e2e2e2;">Service</th>
+                        <th style="text-align: right;background: #e2e2e2;width: 150px;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{SERVICE_ROW}}
+                    {{SERVICE_TOTAL_ROW}}
+                </tbody>
+            </table>
+        </div>
+        <hr style="margin:50px 0"/>
+        <p style="text-align: right;margin: 25px;">Authorized Signatory</p>
+    </div> 
+</body>
+
+</html>
