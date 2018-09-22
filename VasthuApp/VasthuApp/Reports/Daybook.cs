@@ -12,6 +12,13 @@ namespace VasthuApp.Reports
 {
     public partial class Daybook : Form
     {
+        public enum Mode
+        {
+            WithEstimate,
+            WithService
+
+        }
+        public Mode FormMode { get; set; }
         public Daybook()
         {
             InitializeComponent();
@@ -93,11 +100,11 @@ namespace VasthuApp.Reports
 
             var masterList = new List<GridRowModel>();
 
-
+            if(FormMode == Mode.WithService)
             masterList.AddRange(getCustomerServices());
             masterList.AddRange(getExpenses());
             masterList.AddRange(getReceipts());
-            if (Util.Config.IsSecure)
+            if (Util.Config.IsSecure && FormMode == Mode.WithEstimate)
             {
                 masterList.AddRange(getEstimate());
             }

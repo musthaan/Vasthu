@@ -12,6 +12,12 @@ namespace VasthuApp.Reports
 {
     public partial class frmProfitAndLoss : Form
     {
+        public enum Mode {
+            WithEstimate,
+            WithService
+
+        }
+        public Mode FormMode { get; set; }
         public frmProfitAndLoss()
         {
             InitializeComponent();
@@ -59,17 +65,18 @@ namespace VasthuApp.Reports
             _e_list.AddRange(tempList);
 
             var cr_list = new List<ProfitAndLossReportModel>();
-
-            tempList = db.ServiceMasters
-                 .Where(x => x.IsActive == true)
-                 .Select(x => new ProfitAndLossReportModel()
-                 {
-                     CrParticular = x.Name,
-                     CrAmount = x.CustomerServiceDetails.Where(c=> c.CustomerService.IsDeleted ==false).Sum(c => c.Amount)
-                 });
-            cr_list.Add(new ProfitAndLossReportModel() { CrParticular = "Client Service", CrAmount = tempList.Sum(x => x.CrAmount), IsCrHeader = true });
-            cr_list.AddRange(tempList);
-
+            if (FormMode == Mode.WithService)
+            {
+                tempList = db.ServiceMasters
+                     .Where(x => x.IsActive == true)
+                     .Select(x => new ProfitAndLossReportModel()
+                     {
+                         CrParticular = x.Name,
+                         CrAmount = x.CustomerServiceDetails.Where(c => c.CustomerService.IsDeleted == false).Sum(c => c.Amount)
+                     });
+                cr_list.Add(new ProfitAndLossReportModel() { CrParticular = "Client Service", CrAmount = tempList.Sum(x => x.CrAmount), IsCrHeader = true });
+                cr_list.AddRange(tempList);
+            }
             tempList = db.ServiceMasters
                 .Where(x => x.IsActive == true)
                 .Select(x => new ProfitAndLossReportModel()
@@ -83,7 +90,7 @@ namespace VasthuApp.Reports
             List<ProfitAndLossReportModel> modelList = new List<ProfitAndLossReportModel>();
             var debitCount = _e_list.Count();
 
-            if (Util.Config.IsSecure)
+            if (Util.Config.IsSecure && FormMode == Mode.WithEstimate)
             {
                 tempList = db.ServiceMasters
                            .Where(x => x.IsActive == true)
@@ -128,6 +135,24 @@ namespace VasthuApp.Reports
             }
             grdPL.Rows.Add("Total", drTotal, "Total", crTotal);
             grdPL.Rows[grdPL.Rows.Count - 1].DefaultCellStyle.Font = new Font(FontFamily.GenericSansSerif, 10);
+
+            decimal finalDr = 0, finalCr = 0;
+            if (drTotal > crTotal)
+            {
+                finalDr = drTotal - crTotal;
+            }
+            else if (drTotal < crTotal) {
+                finalCr = crTotal - drTotal;
+            }
+            grdPL.Rows.Add("Balance", finalDr, "", finalCr);
+            grdPL.Rows[grdPL.Rows.Count - 1].Cells[0].Style.ForeColor = Color.Black;
+            grdPL.Rows[grdPL.Rows.Count - 1].Cells[0].Style.Font = new Font(FontFamily.GenericSansSerif, 10);
+
+            grdPL.Rows[grdPL.Rows.Count - 1].Cells[1].Style.ForeColor =  Color.DarkRed;
+            grdPL.Rows[grdPL.Rows.Count - 1].Cells[2].Style.Font = new Font(FontFamily.GenericSansSerif, 10);
+
+            grdPL.Rows[grdPL.Rows.Count - 1].Cells[3].Style.ForeColor = Color.DarkGreen;
+            grdPL.Rows[grdPL.Rows.Count - 1].Cells[3].Style.Font = new Font(FontFamily.GenericSansSerif, 10);
         }
     }
     class ProfitAndLossReportModel

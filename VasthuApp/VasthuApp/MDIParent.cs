@@ -51,7 +51,7 @@ namespace VasthuApp
 
         private void daybookToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Reports.Daybook frm = new Reports.Daybook() { MdiParent = this };
+            Reports.Daybook frm = new Reports.Daybook() { MdiParent = this , FormMode = Reports.Daybook.Mode.WithService};
             frm.Show();
 
         }
@@ -74,6 +74,8 @@ namespace VasthuApp
                         Util.Config.IsSecure = true;
                         estimateToolStripMenuItem.Visible = true;
                         estimateReportToolStripMenuItem1.Visible = true;
+                        profitAndLossEstimateToolStripMenuItem.Visible = true;
+                        daybookEstimateToolStripMenuItem.Visible = true;
                     }
                     else
                     {
@@ -117,7 +119,19 @@ namespace VasthuApp
 
         private void profitAndLossToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Reports.frmProfitAndLoss frm = new Reports.frmProfitAndLoss() { MdiParent = this };
+            Reports.frmProfitAndLoss frm = new Reports.frmProfitAndLoss() { MdiParent = this, FormMode = Reports.frmProfitAndLoss.Mode.WithService };
+            frm.Show();
+        }
+
+        private void profitAndLossEstimateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reports.frmProfitAndLoss frm = new Reports.frmProfitAndLoss() { MdiParent = this, FormMode = Reports.frmProfitAndLoss.Mode.WithEstimate };
+            frm.Show();
+        }
+
+        private void daybookEstimateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reports.Daybook frm = new Reports.Daybook() { MdiParent = this, FormMode = Reports.Daybook.Mode.WithEstimate };
             frm.Show();
         }
     }
