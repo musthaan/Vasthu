@@ -76,10 +76,24 @@ namespace VasthuApp.Reports
             Search(DateTime.Today.AddDays((DateTime.Today.Day - 1) * -1), DateTime.Now.Date, null);
             BindServiceCombo();
         }
+ 
 
-        private void btnSearch_Click_1(object sender, EventArgs e)
+        private void dgview_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            var senderGrid = (DataGridView)sender;
 
+            if (e.RowIndex >= 0)
+            {
+                var id = Convert.ToInt64(senderGrid.Rows[e.RowIndex].Cells[0].Value);
+                if (id > 0)
+                {
+                    frmReceipt frm = new frmReceipt() { Mode = Models.EntryMode.Edit, ReceiptId = id };
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        Search(dtpFrom.Value, dtpTo.Value, null);
+                    }
+                }
+            }
         }
     }
 

@@ -50,6 +50,9 @@
             this.btnReferance = new System.Windows.Forms.Button();
             this.txtRef = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnNameSearch
@@ -191,7 +194,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(176, 305);
+            this.btnCancel.Location = new System.Drawing.Point(175, 12);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 45;
@@ -202,7 +205,7 @@
             // btnPrint
             // 
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(95, 305);
+            this.btnPrint.Location = new System.Drawing.Point(94, 12);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 23);
             this.btnPrint.TabIndex = 43;
@@ -212,7 +215,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(15, 305);
+            this.btnSave.Location = new System.Drawing.Point(14, 12);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 42;
@@ -249,17 +252,37 @@
             this.label8.TabIndex = 51;
             this.label8.Text = "Ref";
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(256, 12);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 53;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel2.Controls.Add(this.btnSave);
+            this.panel2.Controls.Add(this.btnDelete);
+            this.panel2.Controls.Add(this.btnPrint);
+            this.panel2.Controls.Add(this.btnCancel);
+            this.panel2.Location = new System.Drawing.Point(-2, 308);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(752, 92);
+            this.panel2.TabIndex = 54;
+            // 
             // frmReceipt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 335);
+            this.ClientSize = new System.Drawing.Size(744, 355);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.btnReferance);
             this.Controls.Add(this.txtRef);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnPrint);
-            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnNameSearch);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtAmount);
@@ -283,6 +306,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Receipt";
             this.Load += new System.EventHandler(this.frmReceipt_Load);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -312,5 +336,7 @@
         private System.Windows.Forms.Button btnReferance;
         private System.Windows.Forms.TextBox txtRef;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Panel panel2;
     }
 }

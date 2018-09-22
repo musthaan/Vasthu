@@ -14,7 +14,7 @@ namespace VasthuApp
     public partial class frmReceipt : Form
     {
         public Models.EntryMode Mode { get; set; }
-        public long CustomerServiceId { get; set; }
+        public long ReceiptId { get; set; }
 
         Models.VasthuDBEntities db = new Models.VasthuDBEntities();
         public frmReceipt()
@@ -26,7 +26,36 @@ namespace VasthuApp
         private void frmReceipt_Load(object sender, EventArgs e)
         {
             ClearForm();
+
+            if (Mode == EntryMode.Edit && ReceiptId > 0)
+            {
+                loadReceiptData();
+            }
         }
+        private void loadReceiptData()
+        {
+
+            var item = db.Receipts.Find(ReceiptId);
+            if (item == null)
+            {
+                MessageBox.Show("Invalid !");
+                DialogResult = DialogResult.Cancel;
+                this.Close();
+            }
+            else
+            {
+                dtpServiceDate.Value = item.Date;
+                txtName.Text = item.CustomerName;
+                txtPhone.Text = item.CustomerPhone;
+                txtAddress.Text = item.CustomerAddress;
+                cmbService.SelectedValue = item.ServiceId;
+                txtNote.Text = item.Remark;
+                txtAmount.Text = item.Total.ToString();
+                dtpServiceDate.Focus();
+            }
+
+        }
+
 
         private void btnNameSearch_Click(object sender, EventArgs e)
         {
@@ -44,23 +73,23 @@ namespace VasthuApp
 
         }
 
-        
+
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (Mode == EntryMode.New)
             {
-                var receipt = new Models.Receipt(); 
+                var receipt = new Models.Receipt();
                 receipt.CustomerAddress = txtAddress.Text.Trim();
                 receipt.CustomerName = txtName.Text.Trim();
                 receipt.CustomerPhone = txtPhone.Text.Trim();
                 receipt.Date = dtpServiceDate.Value;
                 receipt.Remark = txtNote.Text.Trim();
                 receipt.ServiceId = Convert.ToInt64(cmbService.SelectedValue);
-                receipt.Total= Convert.ToDecimal(txtAmount.Text.Trim()); 
+                receipt.Total = Convert.ToDecimal(txtAmount.Text.Trim());
 
 
-                
+
                 db.Receipts.Add(receipt);
                 db.SaveChanges();
                 if (MessageBox.Show("Saved Successfully ! Do you want to print?", "Success", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -70,6 +99,22 @@ namespace VasthuApp
 
                 ClearForm();
 
+            }
+            else if (Mode == EntryMode.Edit)
+            {
+                var receipt = db.Receipts.Find(ReceiptId);
+                receipt.CustomerAddress = txtAddress.Text.Trim();
+                receipt.CustomerName = txtName.Text.Trim();
+                receipt.CustomerPhone = txtPhone.Text.Trim();
+                receipt.Date = dtpServiceDate.Value;
+                receipt.Remark = txtNote.Text.Trim();
+                receipt.ServiceId = Convert.ToInt64(cmbService.SelectedValue);
+                receipt.Total = Convert.ToDecimal(txtAmount.Text.Trim());
+
+                db.SaveChanges();
+                MessageBox.Show("Updated Successfull!");
+                DialogResult = DialogResult.OK;
+                this.Close();
             }
         }
 
@@ -95,14 +140,14 @@ namespace VasthuApp
             txtPhone.Text = string.Empty;
             txtAddress.Text = string.Empty;
             txtNote.Text = string.Empty;
-            
+
             BindServiceCombo();
             txtNote.Text = string.Empty;
             txtAmount.Text = string.Empty;
-              
+
         }
 
-       
+
 
         void BindServiceCombo()
         {
@@ -111,9 +156,21 @@ namespace VasthuApp
             cmbService.DisplayMember = "Name";
 
         }
-        private void print(Receipt   receipt)
+        private void print(Receipt receipt)
         {
 
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure to delete?", "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                db.Receipts.Remove(db.Receipts.Find(ReceiptId));
+                db.SaveChanges();
+                MessageBox.Show("Deleted Successfull!");
+                DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
     }
 }

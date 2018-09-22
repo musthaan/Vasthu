@@ -54,6 +54,7 @@
             this.dgview.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgview.Size = new System.Drawing.Size(704, 465);
             this.dgview.TabIndex = 15;
+            this.dgview.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgview_CellDoubleClick);
             // 
             // label3
             // 
@@ -81,7 +82,7 @@
             this.btnSearch.TabIndex = 12;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click_1);
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // dtpTo
             // 

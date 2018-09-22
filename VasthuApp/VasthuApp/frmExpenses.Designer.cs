@@ -109,6 +109,8 @@
             // 
             // grdExpense
             // 
+            this.grdExpense.AllowUserToAddRows = false;
+            this.grdExpense.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.grdExpense.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.grdExpense.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -119,6 +121,7 @@
             this.colCategory,
             this.colRemark,
             this.colAmount});
+            this.grdExpense.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.grdExpense.Location = new System.Drawing.Point(15, 68);
             this.grdExpense.Name = "grdExpense";
             this.grdExpense.Size = new System.Drawing.Size(758, 396);

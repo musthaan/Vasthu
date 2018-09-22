@@ -65,7 +65,7 @@ namespace VasthuApp.Reports
                  .Select(x => new ProfitAndLossReportModel()
                  {
                      CrParticular = x.Name,
-                     CrAmount = x.CustomerServiceDetails.Sum(c => c.Amount)
+                     CrAmount = x.CustomerServiceDetails.Where(c=> c.CustomerService.IsDeleted ==false).Sum(c => c.Amount)
                  });
             cr_list.Add(new ProfitAndLossReportModel() { CrParticular = "Client Service", CrAmount = tempList.Sum(x => x.CrAmount), IsCrHeader = true });
             cr_list.AddRange(tempList);
@@ -90,7 +90,7 @@ namespace VasthuApp.Reports
                            .Select(x => new ProfitAndLossReportModel()
                            {
                                CrParticular = x.Name,
-                               CrAmount = x.EstimateDetails.Sum(c => c.Amount)
+                               CrAmount = x.EstimateDetails.Where(e=> e.Estimate.IsDeleted==false).Sum(c => c.Amount)
                            });
 
                 cr_list.Add(new ProfitAndLossReportModel() { CrParticular = "Estimate", CrAmount = tempList.Sum(x => x.CrAmount), IsCrHeader = true });

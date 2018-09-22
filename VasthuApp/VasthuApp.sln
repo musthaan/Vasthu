@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VasthuApp", "VasthuApp\VasthuApp.csproj", "{4EBFCF64-789B-49E0-AAB9-AC917EFF9319}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{C2B0D92A-7616-44F1-99B1-292905D55AD3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,8 +15,6 @@ Global
 		{4EBFCF64-789B-49E0-AAB9-AC917EFF9319}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EBFCF64-789B-49E0-AAB9-AC917EFF9319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EBFCF64-789B-49E0-AAB9-AC917EFF9319}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2B0D92A-7616-44F1-99B1-292905D55AD3}.Debug|Any CPU.ActiveCfg = Debug
-		{C2B0D92A-7616-44F1-99B1-292905D55AD3}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
